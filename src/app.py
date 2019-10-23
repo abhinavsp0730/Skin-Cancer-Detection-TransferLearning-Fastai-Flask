@@ -19,15 +19,17 @@ from PIL import Image as PILImage
 # Define a flask app
 app = Flask(__name__)
 
-NAME_OF_FILE = 'model_best' # Name of your exported file
+NAME_OF_FILE = 'stage-1' # Name of your exported file
 PATH_TO_MODELS_DIR = Path('') # by default just use /models in root dir
-classes = ['Actinic keratoses', 'Basal cell carcinoma', 'Benign keratosis',
-           'Dermatofibroma', 'Melanocytic nevi', 'Melanoma', 'Vascular lesions']
-
+classes = ['Banded Racer','Checkered Keelback','Common Krait',
+          'Common Rat Snake','Common Sand Boa','Common Trinket',
+          'Green Tree Vine','Indian Rock Python','King Cobra',
+          'Monocle Cobra','Russells Viper','Saw-scaled Viper','Spectacled Cobra'
+          ]
 def setup_model_pth(path_to_pth_file, learner_name_to_load, classes):
     data = ImageDataBunch.single_from_classes(
         path_to_pth_file, classes, ds_tfms=get_transforms(), size=224).normalize(imagenet_stats)
-    learn = cnn_learner(data, models.densenet169, model_dir='models')
+    learn = cnn_learner(data, models.resnet34, model_dir='models')
     learn.load(learner_name_to_load, device=torch.device('cpu'))
     return learn
 
